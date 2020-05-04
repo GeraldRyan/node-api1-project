@@ -1,6 +1,17 @@
 const express = require('express'); // import the express package
 
 const server = express(); // creates the server
+server.use(express.json()); // teaches express how to read JSON from the body
+
+
+
+let people = [
+  {
+    id: 1,
+    name: "Introduction to HTTP APIs with Node and Express",
+    bio:"",
+  },
+];
 
 // handle requests to the root of the api, the / route
 server.get('/', (req, res) =>
@@ -15,24 +26,23 @@ server.post("/api/users", (req, res) =>
 
   // - respond with HTTP status code `400` (Bad Request).
   // - return the following JSON response: `{ errorMessage: "Please provide name and bio for the user." }`.
-  const person =
-    [{
-      id: 1,
-      name: 'Samwise Gamgee',
-      bio: "a biography"
-    }]
+  const person = req.body;
 
-  res.status(200).json(person);
-  res.send('Hello from Express');
+  // res.status(200).json(person);
+  // res.send('Hello from Express');
 
-
-
-
+  if ( person.name === undefined || person.bio === undefined ) {
+  res.status(400).json({ "errorMessage": "Please provide name and bio for the user." })
+  }
+  else{
+  res.status(201).json({ "done": "Good job" })
+  }
 
 })
 server.get("/api/users", (req, res) =>
 {
-  res.send('Hello from Express');
+  res.status(200).json(people);
+  // res.send('Hello from Express');
 })
 server.get("/api/users/:id", (req, res) =>
 {
