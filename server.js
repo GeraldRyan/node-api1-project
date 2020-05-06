@@ -90,9 +90,12 @@ server.get("/api/users/:id", (req, res) =>
   if (userID.length === 0){
     res.status(404).json({ message: "The user with the specified ID does not exist." })
   }
-  else{
+  else if (userID.length !==0){
     res.status(200).json(userID)
   }
+  else (
+    res.status(500).json({errorMessage: "The user information could not be retrieved."})
+  )
 })
 server.delete("/api/users/:id", (req, res) =>
 {
