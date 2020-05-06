@@ -65,11 +65,13 @@ server.post("/api/users", (req, res) =>
 
 server.get("/api/users", (req, res) =>
 {
-  if (req){
+  if (req)
+  {
 
     res.status(200).json(people);
   }
-  else {
+  else
+  {
     res.status(500).json({ errorMessage: "The users information could not be retrieved." })
   }
   // res.send('Hello from Express');
@@ -80,30 +82,87 @@ server.get("/api/users", (req, res) =>
 server.get("/api/users/:id", (req, res) =>
 {
   const id = req.params.id
-  const userID = people.filter((item) =>{
-    if (item.id == id){
+  const userID = people.filter((item) =>
+  {
+    if (item.id == id)
+    {
       return item
     }
-    else{ return (null)}
+    else { return (null) }
   })
   console.log("Req Params ID, userID", id)
-  if (userID.length === 0){
+  if (userID.length === 0)
+  {
     res.status(404).json({ message: "The user with the specified ID does not exist." })
   }
-  else if (userID.length !==0){
+  else if (userID.length !== 0)
+  {
     res.status(200).json(userID)
   }
   else (
-    res.status(500).json({errorMessage: "The user information could not be retrieved."})
+    res.status(500).json({ errorMessage: "The user information could not be retrieved." })
   )
 })
 server.delete("/api/users/:id", (req, res) =>
 {
-  res.send('Hello from Express');
+  const id = req.params.id
+  const userID = people.filter((item) =>
+  {
+    console.log("ID, item.id", id, item.id)
+    if (item.id == id)
+    {
+      console.log("Item found", item)
+      return item
+    }
+
+  })
+  const remainingUsers = people.filter((item) =>
+  {
+    if (item.id != id)
+    {
+      return item
+    }
+    else { return (null) }
+  })
+  if (userID.length === 0)
+  {
+    res.status(404).json({ message: "The user with the specified ID does not exist." })
+  }
+  else if (userID[0].id == id)
+  {
+    people = remainingUsers
+    // code here, fulfill delete
+    res.status(202).json(people)
+  }
+  else
+  {
+    res.status(500).json({ errorMessage: "The user could not be removed" })
+  }
 })
+
+
+
+
+
 server.patch("/api/users/:id", (req, res) =>
 {
-  res.send('Hello from Express');
+  const id = req.params.id
+  const userID = people.filter((item) =>
+  {
+    if (item.id == id)
+    {
+      return item
+    }
+    else { return (null) }
+  })
+  if (userID.length === 0)
+  {
+    res.status(404).json({ message: "The user with the specified ID does not exist." })
+  }
+  else
+  {
+    res.status(200).json({ message: "User Deleted" })
+  }
 })
 
 
