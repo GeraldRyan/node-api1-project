@@ -144,8 +144,9 @@ server.delete("/api/users/:id", (req, res) =>
 
 
 
-server.patch("/api/users/:id", (req, res) =>
+server.put("/api/users/:id", (req, res) =>
 {
+  const newUser = req.body
   const id = req.params.id
   const userID = people.filter((item) =>
   {
@@ -159,9 +160,22 @@ server.patch("/api/users/:id", (req, res) =>
   {
     res.status(404).json({ message: "The user with the specified ID does not exist." })
   }
-  else
+  else if (newUser.name && newUser.bio)
   {
-    res.status(200).json({ message: "User Deleted" })
+    const allUsers = people.filter((item) =>
+    {
+      if (item.id != id)
+      {
+        return item
+      }
+      else { return (null) }
+    })
+    allUsers.push(newUser)
+    people = allUsers
+    res.status(200).json(people)
+  }
+  else {
+    es.status(500).json({error:"Error"})
   }
 })
 
