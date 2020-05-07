@@ -180,8 +180,10 @@ server.put("/api/users/:id", (req, res) =>
 })
 
 
+const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
 
-// watch for connections on port 5000
-server.listen(5000, () =>
-  console.log('Server running on http://localhost:5000'));
+// // watch for connections on port 5000
+// server.listen(5000, () =>
+//   console.log('Server running on http://localhost:5000'));
